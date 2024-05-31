@@ -57,7 +57,7 @@ function draw() {
   background(255);
 
   // capa mancha NEGRA
-  CapamanchaN.clear();
+  //CapamanchaN.clear();.....Esto limpia la capa
   CapamanchaN.noFill();
   CapamanchaN.noStroke();
   CapamanchaN.blendMode(BLEND);
@@ -74,7 +74,7 @@ function draw() {
   image(CapamanchaN, 0, 0);
 
   // capa Lineas
-  Capalineas.clear();
+  //Capalineas.clear();.....Esto limpia la capa
   Capalineas.noFill();
   Capalineas.noStroke();
   Capalineas.blendMode(BLEND);
@@ -91,7 +91,7 @@ function draw() {
   image(Capalineas, 0, 0);
 
   // capa mancha gris
-  CapamanchaG.clear();
+  //CapamanchaG.clear();.....Esto limpia la capa
   CapamanchaG.noFill();
   CapamanchaG.noStroke();
   CapamanchaG.blendMode(BLEND);
