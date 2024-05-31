@@ -54,7 +54,7 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(150);
 
   // capa mancha NEGRA
   //CapamanchaN.clear();.....Esto limpia la capa
