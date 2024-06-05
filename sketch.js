@@ -1,5 +1,8 @@
-//Migración de Processing a P5JS
+// Comisión Lisandro - Blanco Macarena, Mercado Camila, Suarez Augusto
+// Desde esta linea (2) hasta la (384) son solo avances y versiones que usamos de guias
+
 /*
+//Migración de Processing a P5JS
 let CapamanchaG, CapamanchaN, Capalineas;
 let cant = 5;
 let manchaG = [];
@@ -195,7 +198,7 @@ function draw() {
   image(CapamanchaG, 0, 0);
 }
 */
-//////////////////////////////////////////// Para Maca
+//////////////////////////////////////////// Rotan las capas pero se ve mal
 /*
 // Capas
 let CapamanchaG;
@@ -378,7 +381,7 @@ function draw() {
   pop();
 }
 */
-//////////////////////////////////////////// Para Maca
+//////////////////////////////////////////// Rotan las capas pero se ve mal
 
 //avances hasta el 4.06.2024
 // Capas
@@ -469,7 +472,7 @@ function draw() {
     tiempoDentroCapaL = 0;
   }
 
-  // Verificamos si el mouse está sobre CapamanchaN
+  // Vemos si el mouse está sobre Capa...
   if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) < limiteImagenes) {
     if (tiempoDentroCapaN >= tiempoLimite) {
       let i = floor(random(cant));
@@ -511,7 +514,7 @@ function draw() {
     }
   }
 
-  // Verificamos si el mouse ha permanecido en la misma capa por 2 segundos
+  // Vemos si el mouse se quedo en la misma capa por 2 segundos
   if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaN >= tiempoRotacion) {
     rotarN = true;
     rotarG = false;
@@ -530,7 +533,7 @@ function draw() {
     rotarG = false;
   }
 
-  // Rotar imágenes si se ha alcanzado el límite de imágenes y han pasado 2 segundos
+  // Rotar imágenes si se alcanzo el limite de imagenes y pasaron 2 segundos
   CapamanchaN.clear();
   Capalineas.clear();
   CapamanchaG.clear();
