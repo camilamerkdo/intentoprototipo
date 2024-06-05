@@ -212,16 +212,12 @@ let lineas = [];
 let conteoG = [];
 let conteoN = [];
 let conteoLineas = [];
-// Para la rotacion
 let posG = [];
 let anguloG = [];
 let posN = [];
 let anguloN = [];
 let posLineas = [];
 let anguloLineas = [];
-let anguloN_out = [];
-let anguloLineas_out = [];
-let anguloG_out = [];
 
 // Contadores
 let tiempoDentroCapaN = 0;
@@ -275,30 +271,21 @@ function draw() {
     tiempoDentroCapaN += tiempoTranscurrido;
     tiempoDentroCapaG = 0;
     tiempoDentroCapaL = 0;
-    rotarG = false;
-    rotarLineas = false;
   } else if (mouseY > 532 && mouseY < 800) {
     tiempoDentroCapaL += tiempoTranscurrido;
     tiempoDentroCapaG = 0;
     tiempoDentroCapaN = 0;
-    rotarG = false;
-    rotarN = false;
   } else if (mouseY > 266 && mouseY < 532) {
     tiempoDentroCapaG += tiempoTranscurrido;
     tiempoDentroCapaN = 0;
     tiempoDentroCapaL = 0;
-    rotarN = false;
-    rotarLineas = false;
   } else {
     tiempoDentroCapaN = 0;
     tiempoDentroCapaG = 0;
     tiempoDentroCapaL = 0;
-    rotarG = false;
-    rotarN = false;
-    rotarLineas = false;
   }
 
-  // Verifica si el mouse está sobre CapamanchaN
+  // Verificamos si el mouse está sobre CapamanchaN
   if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) < limiteImagenes) {
     if (tiempoDentroCapaN >= tiempoLimite) {
       let i = floor(random(cant));
@@ -340,63 +327,61 @@ function draw() {
     }
   }
 
-  // Verificar si el mouse se quedo en la misma capa por 2 segundos
+  // Verificamos si el mouse ha permanecido en la misma capa por 2 segundos
   if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaN >= tiempoRotacion) {
     rotarN = true;
+    rotarG = false;
+    rotarLineas = false;
   } else if (mouseY > 532 && mouseY < 800 && conteoLineas.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaL >= tiempoRotacion) {
     rotarLineas = true;
+    rotarG = false;
+    rotarN = false;
   } else if (mouseY > 266 && mouseY < 532 && conteoG.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaG >= tiempoRotacion) {
     rotarG = true;
+    rotarN = false;
+    rotarLineas = false;
+  } else {
+    rotarN = false;
+    rotarLineas = false;
+    rotarG = false;
   }
 
-  // Rotar imágenes si se alcanzo el límite de imágenes y pasaron 2 segundos
+  // Rotar imágenes si se ha alcanzado el límite de imágenes y han pasado 2 segundos
   CapamanchaN.clear();
   Capalineas.clear();
   CapamanchaG.clear();
 
-  if (rotarN) {
-    for (let i = 0; i < posN.length; i++) {
+  for (let i = 0; i < posN.length; i++) {
+    if (rotarN) {
       anguloN[i] += 0.01;
-      CapamanchaN.push();
-      CapamanchaN.translate(posN[i].x + posN[i].w / 2, posN[i].y + posN[i].h / 2);
-      CapamanchaN.rotate(anguloN[i]);
-      CapamanchaN.image(manchaN[i % cant], -posN[i].w / 2, -posN[i].h / 2, posN[i].w, posN[i].h);
-      CapamanchaN.pop();
     }
-  } else {
-    for (let i = 0; i < posN.length; i++) {
-      CapamanchaN.image(manchaN[i % cant], posN[i].x, posN[i].y, posN[i].w, posN[i].h);
-    }
+    CapamanchaN.push();
+    CapamanchaN.translate(posN[i].x + posN[i].w / 2, posN[i].y + posN[i].h / 2);
+    CapamanchaN.rotate(anguloN[i]);
+    CapamanchaN.image(manchaN[i % cant], -posN[i].w / 2, -posN[i].h / 2, posN[i].w, posN[i].h);
+    CapamanchaN.pop();
   }
 
-  if (rotarLineas) {
-    for (let i = 0; i < posLineas.length; i++) {
+  for (let i = 0; i < posLineas.length; i++) {
+    if (rotarLineas) {
       anguloLineas[i] += 0.01;
-      Capalineas.push();
-      Capalineas.translate(posLineas[i].x + posLineas[i].w / 2, posLineas[i].y + posLineas[i].h / 2);
-      Capalineas.rotate(anguloLineas[i]);
-      Capalineas.image(lineas[i % cant], -posLineas[i].w / 2, -posLineas[i].h / 2, posLineas[i].w, posLineas[i].h);
-      Capalineas.pop();
     }
-  } else {
-    for (let i = 0; i < posLineas.length; i++) {
-      Capalineas.image(lineas[i % cant], posLineas[i].x, posLineas[i].y, posLineas[i].w, posLineas[i].h);
-    }
+    Capalineas.push();
+    Capalineas.translate(posLineas[i].x + posLineas[i].w / 2, posLineas[i].y + posLineas[i].h / 2);
+    Capalineas.rotate(anguloLineas[i]);
+    Capalineas.image(lineas[i % cant], -posLineas[i].w / 2, -posLineas[i].h / 2, posLineas[i].w, posLineas[i].h);
+    Capalineas.pop();
   }
 
-  if (rotarG) {
-    for (let i = 0; i < posG.length; i++) {
+  for (let i = 0; i < posG.length; i++) {
+    if (rotarG) {
       anguloG[i] += 0.01;
-      CapamanchaG.push();
-      CapamanchaG.translate(posG[i].x + posG[i].w / 2, posG[i].y + posG[i].h / 2);
-      CapamanchaG.rotate(anguloG[i]);
-      CapamanchaG.image(manchaG[i % cant], -posG[i].w / 2, -posG[i].h / 2, posG[i].w, posG[i].h);
-      CapamanchaG.pop();
     }
-  } else {
-    for (let i = 0; i < posG.length; i++) {
-      CapamanchaG.image(manchaG[i % cant], posG[i].x, posG[i].y, posG[i].w, posG[i].h);
-    }
+    CapamanchaG.push();
+    CapamanchaG.translate(posG[i].x + posG[i].w / 2, posG[i].y + posG[i].h / 2);
+    CapamanchaG.rotate(anguloG[i]);
+    CapamanchaG.image(manchaG[i % cant], -posG[i].w / 2, -posG[i].h / 2, posG[i].w, posG[i].h);
+    CapamanchaG.pop();
   }
 
   image(CapamanchaN, 0, 0);
