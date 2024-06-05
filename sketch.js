@@ -195,6 +195,190 @@ function draw() {
   image(CapamanchaG, 0, 0);
 }
 */
+//////////////////////////////////////////// Para Maca
+/*
+// Capas
+let CapamanchaG;
+let CapamanchaN;
+let Capalineas;
+
+// Cantidad es asignada con un valor de 5
+let cant = 5;
+
+// Arreglos
+let manchaG = [];
+let manchaN = [];
+let lineas = [];
+let conteoG = [];
+let conteoN = [];
+let conteoLineas = [];
+let posG = [];
+let posN = [];
+let posLineas = [];
+
+// Contadores
+let tiempoDentroCapaN = 0;
+let tiempoDentroCapaG = 0;
+let tiempoDentroCapaL = 0;
+let tiempoAnterior = 0;
+let tiempoLimite = 1000; // 1 segundo
+let tiempoRotacion = 2000; // 2 segundos
+let limiteImagenes = 5; // Las veces que se van a dibujar
+
+//  Para rotar
+let rotarG = false;
+let rotarN = false;
+let rotarLineas = false;
+
+let anguloG = 0;
+let anguloN = 0;
+let anguloLineas = 0;
+
+let velocidadRotacion = 0.05; // Velocidad de rotación de las capas
+
+function preload() {
+  // Manchas grandes
+  for (let i = 0; i < cant; i++) {
+    let manchagris = "data/manchasg" + (i + 1) + ".png";
+    manchaG[i] = loadImage(manchagris);
+    conteoG[i] = 0;
+  }
+  // Manchas negras
+  for (let i = 0; i < cant; i++) {
+    let manchanegra = "data/manchasn" + (i + 1) + ".png";
+    manchaN[i] = loadImage(manchanegra);
+    conteoN[i] = 0;
+  }
+  // Líneas
+  for (let i = 0; i < cant; i++) {
+    let dlineas = "data/Linea" + (i + 1) + ".png";
+    lineas[i] = loadImage(dlineas);
+    conteoLineas[i] = 0;
+  }
+}
+
+function setup() {
+  createCanvas(550, 800);
+  // Se convierten en capas
+  CapamanchaG = createGraphics(550, 800);
+  CapamanchaN = createGraphics(550, 800);
+  Capalineas = createGraphics(550, 800);
+}
+
+function draw() {
+  background(150);
+
+  let tiempoTranscurrido = millis() - tiempoAnterior;
+  tiempoAnterior = millis();
+
+  if (mouseY > 0 && mouseY < 266) {
+    tiempoDentroCapaN += tiempoTranscurrido;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaL = 0;
+  } else if (mouseY > 532 && mouseY < 800) {
+    tiempoDentroCapaL += tiempoTranscurrido;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaN = 0;
+  } else if (mouseY > 266 && mouseY < 532) {
+    tiempoDentroCapaG += tiempoTranscurrido;
+    tiempoDentroCapaN = 0;
+    tiempoDentroCapaL = 0;
+  } else {
+    tiempoDentroCapaN = 0;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaL = 0;
+  }
+
+  // Si el mouse está sobre Capa...
+  if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaN >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(150, 250);
+      let h = random(150, 250);
+      CapamanchaN.image(manchaN[i], x, y, w, h);
+      conteoN[i]++;
+      posN.push({ x, y, w, h });
+      tiempoDentroCapaN = 0;
+    }
+  } else if (mouseY > 532 && mouseY < 800 && conteoLineas.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaL >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(5, 50);
+      let h = random(5, 50);
+      Capalineas.image(lineas[i], x, y, w, h);
+      conteoLineas[i]++;
+      posLineas.push({ x, y, w, h });
+      tiempoDentroCapaL = 0;
+    }
+  } else if (mouseY > 266 && mouseY < 532 && conteoG.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaG >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(250, 450);
+      let h = random(250, 450);
+      CapamanchaG.image(manchaG[i], x, y, w, h);
+      conteoG[i]++;
+      posG.push({ x, y, w, h });
+      tiempoDentroCapaG = 0;
+    }
+  }
+
+  // Si el mouse permanece en la misma capa por 2 segundos
+  if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaN >= tiempoRotacion) {
+    rotarN = true;
+    rotarG = false;
+    rotarLineas = false;
+  } else if (mouseY > 532 && mouseY < 800 && conteoLineas.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaL >= tiempoRotacion) {
+    rotarLineas = true;
+    rotarG = false;
+    rotarN = false;
+  } else if (mouseY > 266 && mouseY < 532 && conteoG.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaG >= tiempoRotacion) {
+    rotarG = true;
+    rotarN = false;
+    rotarLineas = false;
+  } else {
+    rotarN = false;
+    rotarLineas = false;
+    rotarG = false;
+  }
+
+  // Rotar capas si se alcanzo el limite de imagenes y pasado 2 segundos
+  if (rotarN) {
+    anguloN += velocidadRotacion;
+  }
+  if (rotarLineas) {
+    anguloLineas += velocidadRotacion;
+  }
+  if (rotarG) {
+    anguloG += velocidadRotacion;
+  }
+
+  // Dibujar capas con rotación centrada
+  push();
+  translate(width / 2, 133); // Centro de la capa CapamanchaN
+  rotate(anguloN);
+  image(CapamanchaN, -width / 2, -133);
+  pop();
+
+  push();
+  translate(width / 2, height - 134); // Centro de la capa Capalineas
+  rotate(anguloLineas);
+  image(Capalineas, -width / 2, -266);
+  pop();
+
+  push();
+  translate(width / 2, height / 2); // Centro de la capa CapamanchaG
+  rotate(anguloG);
+  image(CapamanchaG, -width / 2, -height / 2);
+  pop();
+}
+*/
+//////////////////////////////////////////// Para Maca
 
 //avances hasta el 4.06.2024
 // Capas
