@@ -388,4 +388,3 @@ function draw() {
   image(Capalineas, 0, 0);
   image(CapamanchaG, 0, 0);
 }
-
