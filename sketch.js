@@ -449,7 +449,7 @@ function setup() {
 }
 
 function draw() {
-  background(150);
+  background(200);
 
   let tiempoTranscurrido = millis() - tiempoAnterior;
   tiempoAnterior = millis();
