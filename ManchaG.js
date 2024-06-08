@@ -21,5 +21,4 @@ class ManchaG {
  }
 }
 
-// Añadir la clase ManchaG al ámbito global
-window.ManchaG = ManchaG;
+
