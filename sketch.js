@@ -726,9 +726,3 @@ function draw() {
   image(Capalineas, 0, 0);
   image(CapamanchaG, 0, 0);
 }
-
-
-  image(CapamanchaN, 0, 0);
-  image(Capalineas, 0, 0);
-  image(CapamanchaG, 0, 0);
-}
