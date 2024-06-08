@@ -382,7 +382,7 @@ function draw() {
 }
 */
 //////////////////////////////////////////// Rotan las capas pero se ve mal
-
+/*
 //avances hasta el 4.06.2024
 // Capas
 let CapamanchaG;
@@ -570,6 +570,163 @@ function draw() {
     CapamanchaG.image(manchaG[i % cant], -posG[i].w / 2, -posG[i].h / 2, posG[i].w, posG[i].h);
     CapamanchaG.pop();
   }
+  */
+// Avances hasta 07.06.2024 
+// Capas
+let CapamanchaG;
+let CapamanchaN;
+let Capalineas;
+// Cantidad
+let cant = 5;
+// Arreglos
+let manchaG = [];
+let manchaN = [];
+let lineas = [];
+// Contadores de...
+let conteoG = [];
+let conteoN = [];
+let conteoLineas = [];
+let manchasG = [];
+let manchasN = [];
+let manchasLineas = [];
+let tiempoDentroCapaN = 0;
+let tiempoDentroCapaG = 0;
+let tiempoDentroCapaL = 0;
+let tiempoAnterior = 0;
+let tiempoLimite = 1000;
+let tiempoRotacion = 2000;
+let limiteImagenes = 5;
+// Booleans 
+let rotarG = false;
+let rotarN = false;
+let rotarLineas = false;
+
+// Carga de imagenes
+function preload() {
+  for (let i = 0; i < cant; i++) {
+    manchaG[i] = loadImage("data/manchasg" + (i + 1) + ".png");
+    conteoG[i] = 0;
+    manchaN[i] = loadImage("data/manchasn" + (i + 1) + ".png");
+    conteoN[i] = 0;
+    lineas[i] = loadImage("data/Linea" + (i + 1) + ".png");
+    conteoLineas[i] = 0;
+  }
+}
+
+function setup() {
+  createCanvas(550, 800);
+  CapamanchaG = createGraphics(550, 800);
+  CapamanchaN = createGraphics(550, 800);
+  Capalineas = createGraphics(550, 800);
+}
+
+function draw() {
+  background(200);
+  // Contadores
+  let tiempoTranscurrido = millis() - tiempoAnterior;
+  tiempoAnterior = millis();
+  // Si el mouse....  Activan contadores
+  if (mouseY > 0 && mouseY < 266) {
+    tiempoDentroCapaN += tiempoTranscurrido;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaL = 0;
+  } else if (mouseY > 532 && mouseY < 800) {
+    tiempoDentroCapaL += tiempoTranscurrido;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaN = 0;
+  } else if (mouseY > 266 && mouseY < 532) {
+    tiempoDentroCapaG += tiempoTranscurrido;
+    tiempoDentroCapaN = 0;
+    tiempoDentroCapaL = 0;
+  } else {
+    tiempoDentroCapaN = 0;
+    tiempoDentroCapaG = 0;
+    tiempoDentroCapaL = 0;
+  }
+  // Si el mouse....
+  if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaN >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(150, 250);
+      let h = random(150, 250);
+      manchasN.push(new ManchaN(manchaN[i], x, y, w, h));
+      conteoN[i]++;
+      tiempoDentroCapaN = 0;
+    }
+  } else if (mouseY > 532 && mouseY < 800 && conteoLineas.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaL >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(5, 50);
+      let h = random(5, 50);
+      manchasLineas.push(new Lineas(lineas[i], x, y, w, h));
+      conteoLineas[i]++;
+      tiempoDentroCapaL = 0;
+    }
+  } else if (mouseY > 266 && mouseY < 532 && conteoG.reduce((a, b) => a + b, 0) < limiteImagenes) {
+    if (tiempoDentroCapaG >= tiempoLimite) {
+      let i = floor(random(cant));
+      let x = random(width);
+      let y = random(height);
+      let w = random(250, 450);
+      let h = random(250, 450);
+      manchasG.push(new ManchaG(manchaG[i], x, y, w, h));
+      conteoG[i]++;
+      tiempoDentroCapaG = 0;
+    }
+  }
+  // Condicionales con posicion = booleanas
+  if (mouseY > 0 && mouseY < 266 && conteoN.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaN >= tiempoRotacion) {
+    rotarN = true;
+    rotarG = false;
+    rotarLineas = false;
+  } else if (mouseY > 532 && mouseY < 800 && conteoLineas.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaL >= tiempoRotacion) {
+    rotarLineas = true;
+    rotarG = false;
+    rotarN = false;
+  } else if (mouseY > 266 && mouseY < 532 && conteoG.reduce((a, b) => a + b, 0) >= limiteImagenes && tiempoDentroCapaG >= tiempoRotacion) {
+    rotarG = true;
+    rotarN = false;
+    rotarLineas = false;
+  } else {
+    rotarN = false;
+    rotarLineas = false;
+    rotarG = false;
+  }
+  // Hace que se borre el paso de la imagen
+  CapamanchaN.clear();
+  Capalineas.clear();
+  CapamanchaG.clear();
+
+  manchasN.forEach(m => {
+    if (rotarN) {
+      m.rotar();
+    }
+    m.dibujar(CapamanchaN);
+  });
+
+  manchasLineas.forEach(m => {
+    if (rotarLineas) {
+      m.rotar();
+    }
+    m.dibujar(Capalineas);
+  });
+
+  manchasG.forEach(m => {
+    if (rotarG) {
+      m.rotar();
+    }
+    m.dibujar(CapamanchaG);
+  });
+
+  image(CapamanchaN, 0, 0);
+  image(Capalineas, 0, 0);
+  image(CapamanchaG, 0, 0);
+}
+
 
   image(CapamanchaN, 0, 0);
   image(Capalineas, 0, 0);
