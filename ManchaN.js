@@ -21,3 +21,5 @@ class ManchaN {
  }
 }
 
+// Añadir la clase ManchaN al ámbito global
+// window.ManchaN = ManchaN;

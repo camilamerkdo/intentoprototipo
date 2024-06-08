@@ -20,3 +20,6 @@ class Lineas {
   this.angulo += 0.01;
  }
 }
+
+// Añadir la clase Lineas al ámbito global
+// window.Lineas = Lineas;
