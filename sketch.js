@@ -1,3 +1,5 @@
+//  Comisión Lisandro - Blanco y Mercado
+//  Linea  1352  con  la  version más reciente
 /*
 let CapamanchaG, CapamanchaN, Capalineas;
 let cant = 5;
