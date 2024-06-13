@@ -1,25 +1,43 @@
-class Lineas {
- constructor(img, x, y, w, h) {
+class Linea {
+ constructor(img, x, y, w, h, velocidad) {
   this.img = img;
   this.x = x;
   this.y = y;
   this.w = w;
   this.h = h;
+  this.velocidad = velocidad;
   this.angulo = 0;
+  this.rotando = false;
+  this.opacidad = random(80, 100); // Opacidad aleatoria entre 80 y 100
  }
 
- dibujar(graphics) {
-  graphics.push();
-  graphics.translate(this.x + this.w / 2, this.y + this.h / 2);
-  graphics.rotate(this.angulo);
-  graphics.image(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
-  graphics.pop();
+ startRotating() {
+  this.rotando = true;
+ }
+
+ stopRotating() {
+  this.rotando = false;
  }
 
  rotar() {
-  this.angulo += 0.01;
+  if (this.rotando) {
+   this.angulo += this.velocidad;
+  }
+ }
+
+ desvanecer() {
+  if (this.opacidad > 0) {
+   this.opacidad -= 5; // Reducir opacidad
+  }
+ }
+
+ dibujar(capa) {
+  capa.push();
+  capa.translate(this.x + this.w / 2, this.y + this.h / 2);
+  this.rotar();
+  capa.rotate(this.angulo);
+  capa.tint(255, this.opacidad); // Aplicar opacidad
+  capa.image(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
+  capa.pop();
  }
 }
-
-// Añadir la clase Lineas al ámbito global
-// window.Lineas = Lineas;
